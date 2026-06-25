@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WakeMeUp - Pilih Tujuan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#181c24",
+                    "surface-container": "#1c2028",
+                    "on-primary-container": "#002661",
+                    "on-primary": "#002d6f",
+                    "tertiary": "#c0c1ff",
+                    "surface-variant": "#31353e",
+                    "on-error": "#690005",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#1b1c72",
+                    "surface-container-high": "#262a33",
+                    "surface-container-lowest": "#0a0e16",
+                    "on-secondary-fixed": "#16173f",
+                    "outline": "#8c909f",
+                    "secondary-container": "#444570",
+                    "surface-dim": "#0f131c",
+                    "surface-bright": "#353942",
+                    "on-secondary-fixed-variant": "#42436d",
+                    "secondary-fixed": "#e1e0ff",
+                    "surface": "#0f131c",
+                    "inverse-primary": "#0c58c8",
+                    "primary-fixed-dim": "#b0c6ff",
+                    "secondary": "#c2c2f5",
+                    "on-tertiary-fixed": "#0a0565",
+                    "tertiary-container": "#8688e1",
+                    "tertiary-fixed": "#e1e0ff",
+                    "inverse-surface": "#dfe2ee",
+                    "primary": "#b0c6ff",
+                    "primary-container": "#568dfe",
+                    "secondary-fixed-dim": "#c2c2f5",
+                    "surface-container-highest": "#31353e",
+                    "on-tertiary": "#232479",
+                    "tertiary-fixed-dim": "#c0c1ff",
+                    "outline-variant": "#424653",
+                    "on-primary-fixed-variant": "#00429c",
+                    "on-background": "#dfe2ee",
+                    "on-tertiary-fixed-variant": "#3b3d90",
+                    "on-secondary": "#2b2c55",
+                    "inverse-on-surface": "#2c3039",
+                    "background": "#0f131c",
+                    "surface-tint": "#b0c6ff",
+                    "on-secondary-container": "#b4b4e6",
+                    "on-surface-variant": "#c3c6d6",
+                    "error-container": "#93000a",
+                    "on-surface": "#dfe2ee",
+                    "on-primary-fixed": "#001945",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed": "#d9e2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xs": "4px",
+                    "gutter-mobile": "12px",
+                    "md": "16px",
+                    "margin-mobile": "20px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "title-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0f131c; /* surface */
+            color: #dfe2ee; /* on-surface */
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .map-gradient-overlay {
+            background: radial-gradient(circle at center, transparent 0%, #0f131c 100%);
+        }
+
+        .radius-circle {
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #31353e;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border: 4px solid #568dfe;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(86, 141, 254, 0.4);
+        }
+
+        .glass-panel {
+            background: rgba(28, 32, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(194, 194, 245, 0.1);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.3; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+
+        .animate-pulse-ring {
+            animation: pulse-ring 3s infinite ease-in-out;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-screen w-screen relative flex flex-col">
+<!-- Top App Bar (Mapped from Shared Components) -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant/10 shadow-sm flex justify-between items-center px-margin-mobile py-md">
+<div class="flex items-center gap-md">
+<button class="active:scale-95 duration-200 text-on-surface-variant hover:bg-surface-variant/20 p-xs rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-title-md text-title-md text-primary">Pilih Tujuan</h1>
+</div>
+<button class="active:scale-95 duration-200 text-on-surface-variant hover:bg-surface-variant/20 p-xs rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Map View Container -->
+<main class="flex-1 relative overflow-hidden bg-surface-dim">
+<!-- Map Placeholder -->
+<div class="absolute inset-0 w-full h-full" data-alt="A highly detailed dark-themed satellite map of a modern metropolitan city at night. The streets are illuminated with thin, glowing cyber-blue lines, contrasting against the deep indigo and charcoal blocks of the buildings. The aesthetic is sleek and corporate-modern, with a minimal UI feel, soft ambient glows, and a midnight blue color palette. No labels or text should be visible on the map itself." data-location="Jakarta City Center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD40vfG9LO34bc12FezSXFHks0Sz1UcJUnqes_HxLf63dApyNc_1qvC9Ng2Q0n7pG3ZD5662kqiwwGIwc2_8niC8DMHvq7knjSw_6q3lDxPptbT12gKQa2ey_tyiucza_fjtGBra1kr06xMvv1VbwNrnWE8KniLMtJJKAPuP8LzoZnLk-Rzv87faDE6zDbwhkyFMe-IEbZig3C4HEO7wrgyEkNtnmIMc-wIB8kheA3_TxZkwPmv7I8WNs3rUBedX_4gmkaHUOhpBYVj')">
+</div>
+<!-- Map Interaction Layer -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<!-- Radius Overlay (Dynamic Blueberry) -->
+<div class="radius-circle rounded-full border-2 border-primary-container/40 bg-primary-container/10 flex items-center justify-center animate-pulse-ring" id="radiusOverlay" style="width: 200px; height: 200px;">
+<!-- Center Marker (Periwinkle) -->
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-[48px] drop-shadow-[0_4px_8px_rgba(194,194,245,0.5)]" style="font-variation-settings: 'FILL' 1;">
+                        location_on
+                    </span>
+<!-- Label above marker -->
+<div class="absolute -top-12 bg-surface-container-high px-sm py-xs rounded-lg border border-outline-variant/20 shadow-lg">
+<span class="font-label-sm text-label-sm text-on-surface whitespace-nowrap">Stasiun Sudirman</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Controls -->
+<div class="absolute right-margin-mobile bottom-48 flex flex-col gap-md">
+<button class="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/20 text-primary flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+<button class="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/20 text-primary flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+</main>
+<!-- Bottom Sheet / Panel -->
+<section class="glass-panel w-full p-margin-mobile pb-xl rounded-t-[32px] fixed bottom-0 left-0 right-0 z-50">
+<!-- Handle for dragging feel -->
+<div class="w-12 h-1 bg-outline-variant/30 rounded-full mx-auto mb-lg"></div>
+<div class="flex flex-col gap-lg max-w-[600px] mx-auto">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Atur Radius Alarm</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Alarm akan berbunyi saat memasuki area ini.</p>
+</div>
+<div class="bg-primary-container/20 px-md py-xs rounded-full">
+<span class="font-label-lg text-label-lg text-primary" id="radiusValue">500m</span>
+</div>
+</div>
+<!-- Slider Control -->
+<div class="py-md">
+<input class="w-full" id="radiusSlider" max="2000" min="200" step="100" type="range" value="500"/>
+<div class="flex justify-between mt-sm text-on-surface-variant font-label-sm text-label-sm">
+<span>200m</span>
+<span>1km</span>
+<span>2km</span>
+</div>
+</div>
+<!-- Detail Row -->
+<div class="flex items-center gap-md p-md bg-surface-container-low rounded-xl border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<div class="flex-1">
+<p class="font-label-lg text-label-lg text-on-surface">Estimasi Kedatangan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sekitar 12 menit lagi</p>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full h-12 bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-full shadow-[0_4px_20px_rgba(86,141,254,0.3)] active:scale-[0.98] transition-all duration-200">
+                Konfirmasi Tujuan
+            </button>
+</div>
+</section>
+<!-- Interactive Logic -->
+<script>
+        const slider = document.getElementById('radiusSlider');
+        const radiusValue = document.getElementById('radiusValue');
+        const overlay = document.getElementById('radiusOverlay');
+
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            // Update label
+            if (val >= 1000) {
+                radiusValue.textContent = (val / 1000).toFixed(1) + 'km';
+            } else {
+                radiusValue.textContent = val + 'm';
+            }
+
+            // Scale visual overlay (clamped between 150px and 450px)
+            const minPx = 150;
+            const maxPx = 450;
+            const percentage = (val - 200) / (2000 - 200);
+            const size = minPx + (percentage * (maxPx - minPx));
+            
+            overlay.style.width = size + 'px';
+            overlay.style.height = size + 'px';
+        });
+
+        // Simple haptic-like scaling on buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', () => {
+                btn.classList.add('scale-95');
+            });
+            btn.addEventListener('touchend', () => {
+                btn.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#ffdad6",
+            "outline-variant": "#424653",
+            "surface-container-low": "#191b22",
+            "on-tertiary-container": "#262a33",
+            "inverse-on-surface": "#2e3038",
+            "surface-container-high": "#282a31",
+            "primary-container": "#568dfe",
+            "surface-container-lowest": "#0c0e15",
+            "on-error": "#690005",
+            "inverse-primary": "#0c58c8",
+            "on-secondary": "#2b2c55",
+            "primary-fixed-dim": "#b0c6ff",
+            "tertiary-container": "#8d909c",
+            "surface-container-highest": "#32353c",
+            "secondary-fixed-dim": "#c2c2f5",
+            "primary-fixed": "#d9e2ff",
+            "on-background": "#e1e2ec",
+            "on-secondary-fixed-variant": "#42436d",
+            "on-surface": "#e1e2ec",
+            "on-surface-variant": "#c3c6d6",
+            "on-secondary-fixed": "#16173f",
+            "secondary-fixed": "#e1e0ff",
+            "secondary-container": "#444570",
+            "secondary": "#c2c2f5",
+            "surface": "#11131a",
+            "surface-tint": "#b0c6ff",
+            "error-container": "#93000a",
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#dfe2ee",
+            "tertiary-fixed-dim": "#c3c6d2",
+            "outline": "#8c909f",
+            "surface-bright": "#373940",
+            "inverse-surface": "#e1e2ec",
+            "on-primary-fixed": "#001945",
+            "on-primary": "#002d6f",
+            "on-primary-fixed-variant": "#00429c",
+            "on-primary-container": "#002661",
+            "on-tertiary": "#2c3039",
+            "surface-container": "#1d1f26",
+            "on-tertiary-fixed": "#181c24",
+            "background": "#11131a",
+            "tertiary": "#c3c6d2",
+            "on-secondary-container": "#b4b4e6",
+            "on-tertiary-fixed-variant": "#434750",
+            "primary": "#b0c6ff",
+            "surface-dim": "#11131a",
+            "surface-variant": "#32353c",
+            "midnight": "#11131a",
+            "indigo-ink": "#1d1f26",
+            "lavender-haze": "#b0c6ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "sm": "12px",
+            "margin-desktop": "48px",
+            "xl": "64px",
+            "xs": "4px",
+            "md": "24px",
+            "margin-mobile": "20px",
+            "gutter": "16px",
+            "base": "8px",
+            "lg": "40px"
+          },
+          "fontFamily": {
+            "display-time": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-caps": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "title-md": ["Inter"]
+          },
+          "fontSize": {
+            "display-time": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "500"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #11131a; /* Updated to near-black from Obsidian Velocity */
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .digital-matte {
+      background: #11131a;
+      position: relative;
+    }
+    .pulse-border {
+      border: 1px solid rgba(176, 198, 255, 0.2);
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { border-color: rgba(176, 198, 255, 0.1); }
+      50% { border-color: rgba(176, 198, 255, 0.3); }
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-lg text-on-surface h-screen flex flex-col justify-between">
+<!-- Top Navigation Shell -->
+<header class="w-full top-0 sticky border-b border-outline-variant/20 flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="alarm">alarm</span>
+<h1 class="font-title-md text-title-md text-on-surface">BanguninGue</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-high active:scale-95 transition-transform duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center px-margin-mobile relative">
+<!-- Atmospheric Visual: Subtle background pattern -->
+<div class="absolute inset-0 pointer-events-none opacity-5">
+<div class="w-full h-full" style="background-image: radial-gradient(circle at 50% 50%, #4F86F7 1px, transparent 1px); background-size: 40px 40px;"></div>
+</div>
+<!-- Center Interactive Area -->
+<div class="flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
+<!-- Location Pin with Bell -->
+<div class="relative w-48 h-48 rounded-full bg-surface-container flex items-center justify-center pulse-border mb-8">
+<div class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined text-6xl mb-2" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="material-symbols-outlined text-2xl absolute bottom-12 right-12 bg-surface-container-highest p-1 rounded-full border border-outline-variant" data-icon="notifications_active">notifications_active</span>
+</div>
+</div>
+<!-- Descriptive Label -->
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center tracking-wide px-4">
+        No active trip. Rest easy, we'll wake you up.
+      </p>
+</div>
+<!-- Bottom Action Area -->
+<div class="w-full max-w-sm mt-16 px-4">
+<button class="w-full py-4 bg-surface-container-high text-on-surface rounded-full font-title-md text-title-md border border-outline-variant/30 active:scale-95 transition-all duration-200 flex items-center justify-center gap-3">
+<span class="material-symbols-outlined" data-icon="add_location">add_location</span>
+        Set Destination
+      </button>
+</div>
+</main>
+<!-- Navigation Shell (BottomNavBar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-lowest/80 backdrop-blur-xl rounded-t-xl border-t border-outline-variant/20">
+<!-- Active State -->
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 active:scale-90 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="alarm" style="font-variation-settings: 'FILL' 1;">alarm</span>
+<span class="font-label-caps text-label-caps mt-1">Alarms</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-2 rounded-xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps mt-1">World Clock</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-2 rounded-xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps mt-1">Stopwatch</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-2 rounded-xl transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+<span class="font-label-caps text-label-caps mt-1">Timer</span>
+</div>
+</nav>
+<!-- Interactive Script for micro-interactions -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const button = document.querySelector('main button');
+      button.addEventListener('touchstart', () => {
+        button.style.backgroundColor = '#32353c';
+      });
+      button.addEventListener('touchend', () => {
+        button.style.backgroundColor = '#282a31';
+      });
+    });
+  </script>
+</body></html>

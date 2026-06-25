@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>BanguninGue - Active Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .animate-pulse-dot {
+            animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes ring-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .tracking-ring-glow {
+            border: 2px solid #4F86F7;
+            box-shadow: 0 0 15px rgba(79, 134, 247, 0.3);
+        }
+
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#424653",
+                        "surface-container-low": "#191b22",
+                        "on-tertiary-container": "#262a33",
+                        "inverse-on-surface": "#2e3038",
+                        "surface-container-high": "#282a31",
+                        "primary-container": "#568dfe",
+                        "surface-container-lowest": "#0c0e15",
+                        "on-error": "#690005",
+                        "inverse-primary": "#0c58c8",
+                        "on-secondary": "#2b2c55",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "tertiary-container": "#8d909c",
+                        "surface-container-highest": "#32353c",
+                        "secondary-fixed-dim": "#c2c2f5",
+                        "primary-fixed": "#d9e2ff",
+                        "on-background": "#e1e2ec",
+                        "on-secondary-fixed-variant": "#42436d",
+                        "on-surface": "#e1e2ec",
+                        "on-surface-variant": "#c3c6d6",
+                        "on-secondary-fixed": "#16173f",
+                        "secondary-fixed": "#e1e0ff",
+                        "secondary-container": "#444570",
+                        "secondary": "#c2c2f5",
+                        "surface": "#11131a",
+                        "surface-tint": "#b0c6ff",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#dfe2ee",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "outline": "#8c909f",
+                        "surface-bright": "#373940",
+                        "inverse-surface": "#e1e2ec",
+                        "on-primary-fixed": "#001945",
+                        "on-primary": "#002d6f",
+                        "on-primary-fixed-variant": "#00429c",
+                        "on-primary-container": "#002661",
+                        "on-tertiary": "#2c3039",
+                        "surface-container": "#1d1f26",
+                        "on-tertiary-fixed": "#181c24",
+                        "background": "#11131a",
+                        "tertiary": "#c3c6d2",
+                        "on-secondary-container": "#b4b4e6",
+                        "on-tertiary-fixed-variant": "#434750",
+                        "primary": "#b0c6ff",
+                        "surface-dim": "#11131a",
+                        "surface-variant": "#32353c",
+                        "blueberry": "#4F86F7",
+                        "indigo-ink": "#282C35",
+                        "midnight-blue": "#191970",
+                        "periwinkle-light": "#CCCCFF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "margin-desktop": "48px",
+                        "xl": "64px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "40px"
+                    },
+                    "fontFamily": {
+                        "display-time": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-time": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-lg min-h-screen flex flex-col items-center overflow-hidden">
+<!-- Active Tracking Screen Content -->
+<main class="flex-1 w-full flex flex-col items-center justify-between py-12 px-margin-mobile relative">
+<!-- Background Atmosphere -->
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,#4F86F7_0%,transparent_70%)]"></div>
+<!-- Top Section: Status Chip & Destination -->
+<section class="w-full flex flex-col items-center gap-base z-10">
+<!-- Tracking Status Chip -->
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blueberry shadow-[0_0_20px_rgba(79,134,247,0.3)]">
+<span class="w-2.5 h-2.5 rounded-full bg-white animate-pulse-dot"></span>
+<span class="font-label-caps text-label-caps text-white tracking-wide">Tracking</span>
+</div>
+<!-- Destination Text -->
+<div class="mt-lg text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1 uppercase tracking-widest">Target Destination</p>
+<p class="font-title-md text-title-md text-white font-mono opacity-90">6.1745° S, 106.8227° E</p>
+<p class="font-body-sm text-body-sm text-periwinkle-light mt-1">Stasiun Gambir, Jakarta</p>
+</div>
+</section>
+<!-- Center Section: Progress Ring -->
+<section class="relative flex flex-col items-center justify-center z-10 w-full max-w-sm aspect-square">
+<!-- Decorative Large lightweight ring -->
+<div class="absolute inset-0 rounded-full border-[1.5px] border-surface-container-highest opacity-50"></div>
+<!-- Progress indicator ring (Simulated) -->
+<svg class="absolute inset-0 w-full h-full -rotate-90 drop-shadow-[0_0_8px_rgba(79,134,247,0.4)]" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="48" stroke="#1d1f26" stroke-width="2"></circle>
+<circle cx="50" cy="50" fill="transparent" id="progress-circle" r="48" stroke="#4F86F7" stroke-dasharray="301.59" stroke-dashoffset="120" stroke-linecap="round" stroke-width="2.5"></circle>
+</svg>
+<!-- Distance Text -->
+<div class="flex flex-col items-center">
+<span class="font-display-time text-display-time text-white tabular-nums tracking-tighter" id="distance-number">12.4</span>
+<span class="font-label-caps text-label-caps text-periwinkle-light uppercase tracking-[0.25em] mt-2 font-bold">km away</span>
+</div>
+<!-- Subtle Visual Pulse -->
+<div class="absolute -bottom-8 flex gap-1.5 items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-blueberry opacity-20"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-blueberry opacity-50"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-blueberry"></span>
+</div>
+</section>
+<!-- Bottom Section: Map Visualization Card & Cancel Button -->
+<section class="w-full flex flex-col items-center gap-lg z-10">
+<!-- Minimal Map View Card -->
+<div class="w-full max-w-md aspect-[21/9] rounded-xl border border-outline-variant bg-surface-container-low overflow-hidden group shadow-lg">
+<div class="relative w-full h-full">
+<div class="w-full h-full bg-cover bg-center grayscale contrast-125 opacity-30" data-alt="A dark mode satellite-style map showing a path across a minimalist urban grid. The map uses deep navy and slate colors with a vibrant blueberry blue glowing line representing a route." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0COI6syqI1435WUgp1rkgjfHhm20zqb5Kno7VJSOAQb5hSj1rox_ZSfRoipBkRi0JcKxfB0NU0meAlptCdxNrFLjUGf1Ephxdvhp8H_3g6pSdmSEELqcSeQbgsBVFImtdOS6LbIvApQXJSyVPuus2z_OlY3Ra5pc33lkXx_yxmC3-mIvr31TmAp3v858TEVbnMi_yReA3_9gXOUfnE4zq45Nvru95Y-QvZVgHttDnjqnkcsX3f92d7H7T3Npri3Uoyq6c_wZh83E')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-blueberry scale-150 drop-shadow-[0_0_10px_rgba(79,134,247,0.6)]" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</div>
+</div>
+</div>
+<!-- Cancel Button -->
+<button class="w-full max-w-xs h-14 rounded-full bg-surface-container-highest text-periwinkle-light font-title-md flex items-center justify-center gap-2 active:scale-95 transition-all duration-150 group border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline group-hover:text-periwinkle-light transition-colors">close</span>
+<span>Cancel</span>
+</button>
+</section>
+</main>
+<script>
+    // Micro-interaction: Dynamic Distance Simulation
+    const distEl = document.getElementById('distance-number');
+    const progressCircle = document.getElementById('progress-circle');
+    let currentDist = 12.4;
+    const totalDist = 15.0; // Assume trip started at 15km
+
+    function updateDistance() {
+        if (currentDist > 0.1) {
+            currentDist -= 0.005;
+            distEl.textContent = currentDist.toFixed(1);
+            
+            // Update circle stroke-dashoffset
+            // Circumference = 2 * PI * r = 2 * 3.14159 * 48 = 301.59
+            const circumference = 301.59;
+            const offset = circumference - (currentDist / totalDist) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        }
+        requestAnimationFrame(updateDistance);
+    }
+
+    // Start animation after a brief delay
+    setTimeout(() => {
+        updateDistance();
+    }, 1000);
+
+    // Interaction Feedback
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if(icon) {
+                icon.style.transform = 'scale(0.8)';
+                setTimeout(() => icon.style.transform = 'scale(1)', 150);
+            }
+        });
+    });
+</script>
+</body></html>
