@@ -3,13 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
   StatusBar,
   Animated,
   Easing,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, Polyline } from 'react-native-maps';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import PressableScale from '../components/PressableScale';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -21,6 +22,7 @@ type Props = {
 };
 
 export default function TrackingScreen({ navigation, route }: Props) {
+  const insets = useSafeAreaInsets();
   const { destination, radius } = route.params;
   const distanceKm = 0.1;
 
@@ -52,7 +54,12 @@ export default function TrackingScreen({ navigation, route }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Tracking Badge */}
@@ -125,16 +132,16 @@ export default function TrackingScreen({ navigation, route }: Props) {
 
       {/* Cancel Button */}
       <View style={styles.actionRow}>
-        <TouchableOpacity
+        <PressableScale
           style={styles.cancelBtn}
+          activeScale={0.96}
           onPress={() => navigation.navigate('Home')}
-          activeOpacity={0.8}
         >
-          <Text style={styles.cancelBtnIcon}>✕</Text>
+          <MaterialIcons name="close" size={18} color={colors.textSecondary} />
           <Text style={styles.cancelBtnText}>Cancel</Text>
-        </TouchableOpacity>
+        </PressableScale>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -317,11 +324,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderWidth: 1,
     borderColor: colors.border,
-  },
-  cancelBtnIcon: {
-    color: colors.textSecondary,
-    fontSize: 14,
-    fontWeight: '700',
   },
   cancelBtnText: {
     color: colors.textPrimary,
