@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,26 +8,39 @@ import {
   Easing,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MapView, { Marker, Polyline } from 'react-native-maps';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LeafletMap from '../components/LeafletMap';
 import PressableScale from '../components/PressableScale';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors } from '../theme/colors';
+import { useLocation } from '../hooks/useLocation';
+import { distanceInKm } from '../utils/distance';
+import { useTripStore } from '../store/tripStore';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Tracking'>;
-  route: RouteProp<RootStackParamList, 'Tracking'>;
 };
 
-export default function TrackingScreen({ navigation, route }: Props) {
+export default function TrackingScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
-  const { destination, radius } = route.params;
-  const distanceKm = 0.1;
+  const trip = useTripStore(s => s.trip);
+  const clearTrip = useTripStore(s => s.clearTrip);
+
+  const { location, status } = useLocation(true);
+
+  // Guard: if there's no active trip (e.g. after cancel), bail to Home.
+  useEffect(() => {
+    if (!trip) {
+      navigation.navigate('Home');
+    }
+  }, [trip, navigation]);
+
+  const destination = trip?.destination ?? { latitude: 0, longitude: 0, name: '' };
+  const radius = trip?.radius ?? 500;
+  const distanceKm = location ? distanceInKm(location, destination) : null;
 
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const [isTracking] = useState(true);
 
   useEffect(() => {
     Animated.loop(
@@ -48,7 +61,9 @@ export default function TrackingScreen({ navigation, route }: Props) {
     ).start();
   }, [pulseAnim]);
 
-  const currentLocation = {
+  // Fall back to a point near the destination until the first GPS fix arrives,
+  // so the map has something to render.
+  const currentLocation = location ?? {
     latitude: destination.latitude + 0.001,
     longitude: destination.longitude + 0.001,
   };
@@ -66,7 +81,17 @@ export default function TrackingScreen({ navigation, route }: Props) {
       <View style={styles.trackingBadgeWrapper}>
         <View style={styles.trackingBadge}>
           <View style={styles.trackingDot} />
-          <Text style={styles.trackingBadgeText}>Tracking</Text>
+          <Text style={styles.trackingBadgeText}>
+            {status === 'tracking'
+              ? 'Tracking'
+              : status === 'requesting'
+              ? 'Mencari lokasi…'
+              : status === 'denied'
+              ? 'Izin ditolak'
+              : status === 'error'
+              ? 'Error lokasi'
+              : 'Tracking'}
+          </Text>
         </View>
       </View>
 
@@ -91,43 +116,32 @@ export default function TrackingScreen({ navigation, route }: Props) {
         <View style={styles.radarRing2} />
         <View style={styles.radarRing1} />
         <View style={styles.distanceCenter}>
-          <Text style={styles.distanceValue}>{distanceKm.toFixed(1)}</Text>
-          <Text style={styles.distanceUnit}>KM AWAY</Text>
+          {distanceKm === null ? (
+            <>
+              <Text style={styles.distanceValue}>—</Text>
+              <Text style={styles.distanceUnit}>MENCARI…</Text>
+            </>
+          ) : distanceKm < 1 ? (
+            <>
+              <Text style={styles.distanceValue}>{Math.round(distanceKm * 1000)}</Text>
+              <Text style={styles.distanceUnit}>METER LAGI</Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.distanceValue}>{distanceKm.toFixed(1)}</Text>
+              <Text style={styles.distanceUnit}>KM LAGI</Text>
+            </>
+          )}
         </View>
       </View>
 
       {/* Mini Map */}
       <View style={styles.miniMapContainer}>
-        <MapView
-          style={styles.miniMap}
-          region={{
-            latitude:
-              (currentLocation.latitude + destination.latitude) / 2,
-            longitude:
-              (currentLocation.longitude + destination.longitude) / 2,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          rotateEnabled={false}
-          customMapStyle={darkMapStyle}
-        >
-          <Marker coordinate={currentLocation}>
-            <View style={styles.currentLocationMarker} />
-          </Marker>
-          <Marker coordinate={destination} title={destination.name}>
-            <View style={styles.destinationMarker}>
-              <Text style={styles.destinationMarkerIcon}>📍</Text>
-            </View>
-          </Marker>
-          <Polyline
-            coordinates={[currentLocation, destination]}
-            strokeColor={colors.primary}
-            strokeWidth={2}
-            lineDashPattern={[6, 4]}
-          />
-        </MapView>
+        <LeafletMap
+          current={currentLocation}
+          destination={destination}
+          radius={radius}
+        />
       </View>
 
       {/* Cancel Button */}
@@ -135,36 +149,18 @@ export default function TrackingScreen({ navigation, route }: Props) {
         <PressableScale
           style={styles.cancelBtn}
           activeScale={0.96}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => {
+            clearTrip();
+            navigation.navigate('Home');
+          }}
         >
           <MaterialIcons name="close" size={18} color={colors.textSecondary} />
-          <Text style={styles.cancelBtnText}>Cancel</Text>
+          <Text style={styles.cancelBtnText}>Batalkan Perjalanan</Text>
         </PressableScale>
       </View>
     </View>
   );
 }
-
-const darkMapStyle = [
-  { elementType: 'geometry', stylers: [{ color: '#1a1a2e' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1a2e' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#8888aa' }] },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#2a2a45' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#0d1b2a' }],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'geometry',
-    stylers: [{ color: '#1e1e38' }],
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -291,23 +287,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     marginBottom: 20,
-  },
-  miniMap: {
-    flex: 1,
-  },
-  currentLocationMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: colors.accent,
-    borderWidth: 2.5,
-    borderColor: colors.textPrimary,
-  },
-  destinationMarker: {
-    alignItems: 'center',
-  },
-  destinationMarkerIcon: {
-    fontSize: 22,
   },
 
   actionRow: {

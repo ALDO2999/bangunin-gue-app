@@ -72,6 +72,9 @@ android/app/src/main/assets/index.android.bundle
 .env.local
 .env.*
 
+# Local secrets (API keys) — keep the .example template committed
+src/config/secrets.ts
+
 # testing
 /coverage
 

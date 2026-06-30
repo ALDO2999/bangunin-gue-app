@@ -19,6 +19,9 @@ type Props = PressableProps & {
  * A Pressable that smoothly scales down while pressed, giving buttons a
  * tactile, premium feel. Uses the native driver so the animation runs at
  * 60fps off the JS thread.
+ *
+ * Note: when used as a flex child (e.g. flex: 1 in a row), wrap it in a
+ * container View that owns the flex, since the scale lives on the inner view.
  */
 export default function PressableScale({
   activeScale = 0.96,
