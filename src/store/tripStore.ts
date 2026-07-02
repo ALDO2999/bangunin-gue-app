@@ -15,12 +15,19 @@ export type Trip = {
 type TripState = {
   /** The currently active trip, or null when there's no active trip. */
   trip: Trip | null;
+  /** True while the arrival alarm is ringing (drives the full-screen alarm). */
+  alarmRinging: boolean;
   startTrip: (trip: Trip) => void;
   clearTrip: () => void;
+  triggerAlarm: () => void;
+  dismissAlarm: () => void;
 };
 
 export const useTripStore = create<TripState>(set => ({
   trip: null,
-  startTrip: trip => set({ trip }),
-  clearTrip: () => set({ trip: null }),
+  alarmRinging: false,
+  startTrip: trip => set({ trip, alarmRinging: false }),
+  clearTrip: () => set({ trip: null, alarmRinging: false }),
+  triggerAlarm: () => set({ alarmRinging: true }),
+  dismissAlarm: () => set({ alarmRinging: false }),
 }));

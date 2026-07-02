@@ -1,5 +1,8 @@
 package com.banguningue
 
+import android.os.Build
+import android.os.Bundle
+import android.view.WindowManager
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -12,6 +15,24 @@ class MainActivity : ReactActivity() {
    * rendering of the component.
    */
   override fun getMainComponentName(): String = "BanguninGue"
+
+  /**
+   * Allow the alarm's full-screen intent to appear over the lock screen and
+   * turn the screen on, so the user is woken even when the phone is asleep.
+   */
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+      setShowWhenLocked(true)
+      setTurnScreenOn(true)
+    } else {
+      @Suppress("DEPRECATION")
+      window.addFlags(
+        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+          WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+      )
+    }
+  }
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

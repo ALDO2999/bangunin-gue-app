@@ -20,6 +20,7 @@ import PressableScale from '../components/PressableScale';
 import Slider from '../components/Slider';
 import { usePlaceSearch, Place } from '../hooks/usePlaceSearch';
 import { useTripStore } from '../store/tripStore';
+import { startTracking } from '../services/trackingService';
 import { LatLng } from '../utils/distance';
 
 type Props = {
@@ -64,8 +65,11 @@ export default function SelectDestinationScreen({ navigation }: Props) {
 
   const startTrip = useTripStore(s => s.startTrip);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     startTrip({ destination: { ...center, name: placeName }, radius });
+    // Kick off the background tracking service so the alarm still fires when
+    // the app is minimized or the screen is off.
+    await startTracking();
     navigation.navigate('Tracking');
   };
 

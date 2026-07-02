@@ -17,6 +17,8 @@ import { colors } from '../theme/colors';
 import { useLocation } from '../hooks/useLocation';
 import { distanceInKm } from '../utils/distance';
 import { useTripStore } from '../store/tripStore';
+import { useArrivalAlarm } from '../hooks/useArrivalAlarm';
+import { stopTracking } from '../services/trackingService';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Tracking'>;
@@ -39,6 +41,13 @@ export default function TrackingScreen({ navigation }: Props) {
   const destination = trip?.destination ?? { latitude: 0, longitude: 0, name: '' };
   const radius = trip?.radius ?? 500;
   const distanceKm = location ? distanceInKm(location, destination) : null;
+
+  // Fire the wake-up alarm once when the user enters the radius.
+  const { arrived } = useArrivalAlarm(
+    location,
+    trip?.destination ?? null,
+    radius,
+  );
 
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
@@ -79,10 +88,12 @@ export default function TrackingScreen({ navigation }: Props) {
 
       {/* Tracking Badge */}
       <View style={styles.trackingBadgeWrapper}>
-        <View style={styles.trackingBadge}>
+        <View style={[styles.trackingBadge, arrived && styles.arrivedBadge]}>
           <View style={styles.trackingDot} />
           <Text style={styles.trackingBadgeText}>
-            {status === 'tracking'
+            {arrived
+              ? '⏰ Sudah sampai!'
+              : status === 'tracking'
               ? 'Tracking'
               : status === 'requesting'
               ? 'Mencari lokasi…'
@@ -150,6 +161,7 @@ export default function TrackingScreen({ navigation }: Props) {
           style={styles.cancelBtn}
           activeScale={0.96}
           onPress={() => {
+            stopTracking();
             clearTrip();
             navigation.navigate('Home');
           }}
@@ -182,6 +194,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 7,
+  },
+  arrivedBadge: {
+    backgroundColor: '#7ee787', // green to signal arrival
   },
   trackingDot: {
     width: 7,

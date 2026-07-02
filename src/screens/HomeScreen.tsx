@@ -18,6 +18,13 @@ import { useTripStore } from '../store/tripStore';
 import { useLocation } from '../hooks/useLocation';
 import { distanceInKm } from '../utils/distance';
 import { getGreeting } from '../utils/greeting';
+import { stopTracking } from '../services/trackingService';
+import { fireArrivalAlarm } from '../services/alarm';
+import { useBackgroundPermission } from '../hooks/useBackgroundPermission';
+import {
+  ensureBackgroundLocation,
+  openAppSettings,
+} from '../services/permissions';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -29,11 +36,23 @@ export default function HomeScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const trip = useTripStore(s => s.trip);
   const clearTrip = useTripStore(s => s.clearTrip);
+  const triggerAlarm = useTripStore(s => s.triggerAlarm);
 
   // Only track location while there's an active trip.
   const { location } = useLocation(!!trip);
   const distanceKm =
     trip && location ? distanceInKm(location, trip.destination) : null;
+
+  const { granted: bgGranted, recheck } = useBackgroundPermission();
+
+  const handleEnableBackground = async () => {
+    const ok = await ensureBackgroundLocation();
+    if (!ok) {
+      // Android 11+ won't grant "all the time" via dialog — send to settings.
+      openAppSettings();
+    }
+    recheck();
+  };
 
   const greeting = useMemo(() => getGreeting(), []);
 
@@ -131,6 +150,34 @@ export default function HomeScreen({ navigation }: Props) {
             </View>
           </View>
 
+          {/* Background-permission warning (only when not yet granted) */}
+          {!bgGranted && (
+            <PressableScale
+              style={styles.permWarn}
+              activeScale={0.98}
+              onPress={handleEnableBackground}
+            >
+              <MaterialIcons
+                name="warning-amber"
+                size={20}
+                color={colors.error}
+              />
+              <View style={styles.permWarnText}>
+                <Text style={styles.permWarnTitle}>
+                  Aktifkan lokasi "Sepanjang waktu"
+                </Text>
+                <Text style={styles.permWarnBody}>
+                  Supaya alarm tetap bunyi walau app ditutup. Ketuk untuk atur.
+                </Text>
+              </View>
+              <MaterialIcons
+                name="chevron-right"
+                size={22}
+                color={colors.onSurfaceVariant}
+              />
+            </PressableScale>
+          )}
+
           {/* Active trip card */}
           <View style={styles.tripCard}>
             <View style={styles.tripMap}>
@@ -204,7 +251,10 @@ export default function HomeScreen({ navigation }: Props) {
               <PressableScale
                 style={[styles.tripBtn, styles.tripBtnGhost]}
                 activeScale={0.96}
-                onPress={clearTrip}
+                onPress={() => {
+                  stopTracking();
+                  clearTrip();
+                }}
               >
                 <MaterialIcons
                   name="close"
@@ -269,6 +319,18 @@ export default function HomeScreen({ navigation }: Props) {
               color={colors.onSurface}
             />
             <Text style={styles.setDestinationText}>Set Destination</Text>
+          </PressableScale>
+
+          {/* TEMPORARY: test the alarm without needing to reach a radius. */}
+          <PressableScale
+            style={styles.testAlarmBtn}
+            activeScale={0.94}
+            onPress={() => {
+              fireArrivalAlarm('Tujuan');
+              triggerAlarm();
+            }}
+          >
+            <Text style={styles.testAlarmText}>Test Alarm</Text>
           </PressableScale>
         </View>
       )}
@@ -383,6 +445,36 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     fontFamily: 'Inter',
     marginTop: 3,
+  },
+
+  // --- Background permission warning ---
+  permWarn: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 16,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: 'rgba(147, 0, 10, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 180, 171, 0.3)',
+  },
+  permWarnText: {
+    flex: 1,
+  },
+  permWarnTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.error,
+    fontFamily: 'Inter',
+  },
+  permWarnBody: {
+    fontSize: 12,
+    lineHeight: 16,
+    color: colors.onSurfaceVariant,
+    fontFamily: 'Inter',
+    marginTop: 2,
   },
 
   // --- Active trip card ---
@@ -584,6 +676,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     color: colors.onSurface,
+    fontFamily: 'Inter',
+  },
+  testAlarmBtn: {
+    marginTop: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  testAlarmText: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
     fontFamily: 'Inter',
   },
 
